@@ -12,7 +12,11 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using UWPIOT_4.AzureHelpers;
+using Microsoft.Azure.Devices.Client;
+using SharedLibaries.Models;
+using Newtonsoft.Json.Linq;
+using SharedLibaries.Services;
+
 
 
 
@@ -26,15 +30,37 @@ namespace UWPIOT_4
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private static readonly string _conn = "HostName=ec-win20-iothubida.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Mjbk8lweeBRM2LZf0msaFS5E+Dn/dXiQipoEfn5hZP0=";
+
+        private static readonly DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(_conn, TransportType.Mqtt);
         public MainPage()
         {
             this.InitializeComponent();
         }
+        public WeatherList weatherlist = new WeatherList();
+        public BodyMessageModel humtemp = new BodyMessageModel();
+        
 
-        public void btnAddTemprature_Click(object sender, RoutedEventArgs e)
+        private async void btnSendMessageAsync_Click(object sender, RoutedEventArgs e)
         {
-            AzureProgram.SendReceiveMessageAsync();
-        }
+            var result = await DeviceServices.SendMessageAsync(deviceClient);
 
+            dynamic data = JObject.Parse(result);
+
+            var temp = Convert.ToString(data.Temperature);
+            var hum = Convert.ToString(data.Humidity);
+
+            DeviceServices.ReceiveMessageAsync(deviceClient).GetAwaiter();
+
+            try
+            {
+                weatherlist.Add(new TempratureModel($"Temeprature: {temp}", $"Humidity: {hum}"));
+            }
+            catch
+            {
+
+            }
+
+        }
     }
 }

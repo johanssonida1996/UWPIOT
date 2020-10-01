@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.Devices;
-using SharedLibaries.Models;
-using SharedLibaries.Services;
+using SharedLibariesCore.Models;
+using SharedLibariesCore.Services;
 
 namespace AzureFunctions
 {
@@ -23,9 +23,6 @@ namespace AzureFunctions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
             ILogger log)
         {
-
-
-
             
             string targetDeviceId = req.Query["targetdeviceid"];
             string message = req.Query["message"];

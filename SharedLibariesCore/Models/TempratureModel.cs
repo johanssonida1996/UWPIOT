@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace SharedLibaries.Models
+
+namespace SharedLibariesCore.Models
 {
     public class TempratureModel
     {
@@ -22,7 +21,5 @@ namespace SharedLibaries.Models
             Temperature = temperature;
             Humidity = humidity;
         }
-
     }
-
 }

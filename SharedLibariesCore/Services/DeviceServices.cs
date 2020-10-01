@@ -1,40 +1,37 @@
-﻿using SharedLibaries.Models;
+﻿using Microsoft.Azure.Devices.Client;
+using Newtonsoft.Json;
+using SharedLibariesCore.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MAD = Microsoft.Azure.Devices;
-using Microsoft.Azure.Devices.Client;
-using Newtonsoft.Json;
-using SharedLibaries.Services;
 
-
-namespace SharedLibaries.Services
+namespace SharedLibariesCore.Services
 {
-    public static class DeviceServices
+    public class DeviceServices
     {
         private static readonly Random rnd = new Random();
         public static async Task<string> SendMessageAsync(DeviceClient deviceClient)
         {
-            
-                var data = new TempratureModel
-                {
-                    Temperature = rnd.Next(20, 30).ToString(),
-                    Humidity = rnd.Next(40, 50).ToString()
-                };
 
-                var json = JsonConvert.SerializeObject(data);
+            var data = new TempratureModel
+            {
+                Temperature = rnd.Next(20, 30).ToString(),
+                Humidity = rnd.Next(40, 50).ToString()
+            };
 
-                var payload = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(json));
+            var json = JsonConvert.SerializeObject(data);
+
+            var payload = new Microsoft.Azure.Devices.Client.Message(Encoding.UTF8.GetBytes(json));
 
 
-                await deviceClient.SendEventAsync(payload);
+            await deviceClient.SendEventAsync(payload);
 
-                Console.WriteLine($"Message sent: {json}");
+            Console.WriteLine($"Message sent: {json}");
 
             return json;
-            
+
         }
 
         public static async Task ReceiveMessageAsync(DeviceClient deviceClient)
