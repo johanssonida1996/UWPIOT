@@ -30,7 +30,7 @@ namespace UWPIOT_4
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private static readonly string _conn = "HostName=ec-win20-iothubida.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=Mjbk8lweeBRM2LZf0msaFS5E+Dn/dXiQipoEfn5hZP0=";
+        private static readonly string _conn = "HostName=ec-win20-iothubida.azure-devices.net;DeviceId=UWPApp;SharedAccessKey=HW14jmei3IwjlNvaQuwGL4Zw2mtumX6E2z8xYrXgFg4=";
 
         private static readonly DeviceClient deviceClient = DeviceClient.CreateFromConnectionString(_conn, TransportType.Mqtt);
         public MainPage()
